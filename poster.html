@@ -1,0 +1,1682 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>48小时倒计时城市落跑计划</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;1,700&family=Noto+Sans+SC:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:      #080706;
+      --bg-mid:  #0F0D0A;
+      --bg-card: #131109;
+      --border:  #222018;
+      --border2: #2E2A22;
+      --orange:  #FF5C00;
+      --orange2: #FF8040;
+      --lime:    #C4E000;
+      --teal:    #00C8B4;
+      --white:   #F5EEE4;
+      --stone:   #7A6E60;
+      --dim:     #3E3830;
+      --dim2:    #524840;
+    }
+
+    body {
+      background: #050403;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 48px 20px;
+      font-family: 'Barlow Condensed', 'Noto Sans SC', sans-serif;
+    }
+
+    .poster {
+      background: var(--bg);
+      color: var(--white);
+      width: 480px;
+      overflow: hidden;
+      border: 1px solid var(--border2);
+      position: relative;
+    }
+
+    /* ── HEADER ── */
+    .poster-header {
+      background: var(--bg-mid);
+      padding: 0;
+      border-bottom: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header-inner {
+      padding: 32px 28px 24px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .bg-stroke {
+      position: absolute;
+      right: -20px;
+      top: -24px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 260px;
+      color: transparent;
+      -webkit-text-stroke: 1px #18160F;
+      line-height: 1;
+      z-index: 1;
+      pointer-events: none;
+      user-select: none;
+      letter-spacing: -8px;
+    }
+
+    .mountain-svg {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      width: 100%; height: 80px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .header-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .eyebrow-dot {
+      width: 5px; height: 5px;
+      background: var(--orange);
+      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+      flex-shrink: 0;
+    }
+
+    .eyebrow-text {
+      font-size: 10px;
+      letter-spacing: 5px;
+      color: var(--stone);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .header-num-wrap {
+      display: flex;
+      align-items: flex-end;
+      gap: 0;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .header-big-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 136px;
+      line-height: 0.82;
+      color: var(--white);
+      letter-spacing: -4px;
+    }
+
+    .header-unit-stack {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding-bottom: 6px;
+      margin-left: 10px;
+      gap: 2px;
+    }
+
+    .unit-hrs-row {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+
+    .unit-hrs {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 36px;
+      line-height: 1;
+      color: var(--orange);
+      letter-spacing: 4px;
+    }
+
+    .unit-cn {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: 4px;
+      line-height: 1;
+    }
+
+    .unit-sub {
+      font-size: 9px;
+      letter-spacing: 4px;
+      color: var(--dim2);
+      font-weight: 700;
+    }
+
+    .header-title-cn {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: 6px;
+      margin-bottom: 3px;
+      line-height: 1.2;
+    }
+
+    .header-subtitle {
+      font-size: 9px;
+      letter-spacing: 4px;
+      color: var(--dim2);
+      font-weight: 700;
+      margin-bottom: 22px;
+    }
+
+    /* stats row */
+    .stats-row {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      margin-bottom: 18px;
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      padding: 10px 16px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      flex: 1;
+    }
+
+    .stat-item + .stat-item { border-left: none; }
+
+    .stat-label {
+      font-size: 8px;
+      letter-spacing: 3px;
+      color: var(--dim2);
+      font-weight: 700;
+    }
+
+    .stat-val {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      letter-spacing: 2px;
+      color: var(--white);
+      line-height: 1;
+    }
+
+    .slogan-block {
+      margin-bottom: 18px;
+      padding: 14px 0 14px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .slogan-main {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 16px;
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: 3px;
+      line-height: 1.3;
+      margin-bottom: 5px;
+    }
+
+    .slogan-sub {
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--stone);
+      font-weight: 700;
+    }
+
+    .orgs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .org-tag {
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      color: var(--stone);
+      border: 1px solid var(--border2);
+      padding: 4px 10px;
+      font-weight: 700;
+    }
+
+    /* ── ACCENT BAR ── */
+    .accent-bar {
+      display: flex;
+      height: 4px;
+    }
+
+    /* ── PRE-EVENT ── */
+    .pre-event {
+      display: flex;
+      align-items: center;
+      padding: 10px 24px;
+      gap: 10px;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      border-top: 1px solid var(--border);
+    }
+
+    .pre-label { font-size: 9px; letter-spacing: 3px; color: var(--dim2); font-weight: 700; white-space: nowrap; }
+    .pre-sep { color: var(--border2); }
+    .pre-name { font-family: 'Noto Sans SC', sans-serif; font-size: 12px; color: var(--stone); }
+
+    /* ── DAY LABELS ── */
+    .timeline {}
+    .day-section { }
+
+    .day-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 24px;
+      font-size: 9px;
+      letter-spacing: 5px;
+      color: var(--dim2);
+      font-weight: 700;
+      background: var(--bg-mid);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+
+    .day-label::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+    }
+
+    .day-label.day3::before { background: var(--lime); }
+    .day-label.day4::before { background: var(--orange); }
+    .day-label.day5::before { background: var(--teal); }
+
+    .day-label-accent {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 13px;
+      letter-spacing: 2px;
+    }
+
+    .day3 .day-label-accent { color: var(--lime); }
+    .day4 .day-label-accent { color: var(--orange); }
+    .day5 .day-label-accent { color: var(--teal); }
+
+    .day-label-line { flex: 1; height: 1px; background: var(--border); }
+
+    /* ── EVENT ROWS ── */
+    .event-row {
+      display: flex;
+      align-items: stretch;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      transition: opacity 0.6s ease, filter 0.6s ease;
+      background: var(--bg);
+    }
+
+    .event-row:hover { background: rgba(255,255,255,0.015); }
+    .event-row:last-child { border-bottom: none; }
+
+    .event-row.locked {
+      opacity: 0.1;
+      filter: blur(3px);
+      pointer-events: none;
+    }
+
+    .day-section.day-locked { display: none; }
+
+    @keyframes unlockFlash {
+      0%   { background: rgba(255,92,0,0.1); }
+      100% { background: transparent; }
+    }
+    .event-row.unlocking { animation: unlockFlash 1.2s ease forwards; }
+
+    .event-accent { display: none; }
+
+    .events-wrapper {
+      border-left: 3px solid;
+    }
+
+    .events-wrapper.ew-lime   { border-color: var(--lime); }
+    .events-wrapper.ew-orange { border-color: var(--orange); }
+    .events-wrapper.ew-teal   { border-color: var(--teal); }
+
+    /* 左侧：真实时间 */
+    .time-col {
+      width: 80px;
+      min-width: 80px;
+      padding: 16px 0 16px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 2px;
+    }
+
+    .time-label {
+      font-size: 7px;
+      letter-spacing: 3px;
+      color: var(--dim2);
+      font-weight: 700;
+    }
+
+    .time-value {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 32px;
+      line-height: 1;
+      letter-spacing: 1px;
+      color: var(--white);
+    }
+
+    .event-divider {
+      width: 1px;
+      background: var(--border);
+      margin: 12px 0;
+      flex-shrink: 0;
+    }
+
+    .event-col {
+      flex: 1;
+      padding: 14px 12px 14px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 3px;
+    }
+
+    .event-phase {
+      font-size: 8px;
+      letter-spacing: 3px;
+      color: var(--dim2);
+      font-weight: 700;
+    }
+
+    .event-name {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.35;
+    }
+
+    .event-time {
+      font-size: 10px;
+      color: var(--dim2);
+      letter-spacing: 1px;
+    }
+
+    /* 右侧：T-MINUS 倒计时 */
+    .tminus-col {
+      width: 78px;
+      min-width: 78px;
+      padding: 14px 16px 14px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 4px;
+      position: relative;
+    }
+
+    .tminus-label {
+      font-size: 7px;
+      letter-spacing: 2px;
+      color: var(--dim);
+      font-weight: 700;
+    }
+
+    .tminus-value {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      line-height: 1;
+      letter-spacing: 1px;
+      opacity: 0.45;
+    }
+
+    .tminus-bar {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+      margin-top: 2px;
+    }
+
+    .cv-lime   { color: var(--lime); }
+    .cv-orange { color: var(--orange); }
+    .cv-teal   { color: var(--teal); }
+
+    /* ── DAY COUNTDOWN BANNER ── */
+    .day-countdown-banner {
+      padding: 16px 24px 14px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-card);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dcb-label {
+      font-size: 8px;
+      letter-spacing: 4px;
+      color: var(--dim2);
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .dcb-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+
+    .dcb-num-wrap {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      line-height: 1;
+    }
+
+    .dcb-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 72px;
+      line-height: 0.88;
+      letter-spacing: -2px;
+    }
+
+    .dcb-unit {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 16px;
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: 2px;
+      padding-bottom: 4px;
+    }
+
+    .dcb-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+      padding-bottom: 4px;
+    }
+
+    .dcb-sub {
+      font-size: 8px;
+      letter-spacing: 3px;
+      color: var(--dim2);
+      font-weight: 700;
+      text-align: right;
+    }
+
+    .dcb-bar { width: 28px; height: 2px; }
+
+    .dcb-lime .dcb-num { color: var(--lime); }
+    .dcb-lime .dcb-bar { background: var(--lime); }
+    .dcb-orange .dcb-num { color: var(--orange); }
+    .dcb-orange .dcb-bar { background: var(--orange); }
+    .dcb-teal .dcb-num { color: var(--teal); }
+    .dcb-teal .dcb-bar { background: var(--teal); }
+
+    .schedule-notice {
+      padding: 10px 24px;
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 10px;
+      color: var(--dim2);
+      letter-spacing: 1px;
+      border-top: 1px solid var(--border);
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .notice-icon {
+      color: var(--orange);
+      font-size: 11px;
+      flex-shrink: 0;
+    }
+
+    /* ── FOOTER ── */
+    .poster-footer {
+      background: var(--bg-mid);
+      padding: 14px 24px;
+      border-top: 1px solid var(--border2);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-brand {
+      font-size: 9px;
+      letter-spacing: 5px;
+      color: var(--dim2);
+      font-weight: 700;
+    }
+
+    .footer-line { flex: 1; height: 1px; background: var(--border); }
+
+    .footer-right {
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: var(--dim2);
+      font-weight: 700;
+    }
+
+    /* ══ OVERLAYS ══ */
+
+    /* ── PHASE 1: SECRET ── */
+    #secret-overlay {
+      position: fixed; inset: 0; z-index: 200;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #060504;
+      padding: 40px 32px;
+      overflow: hidden;
+    }
+
+    .secret-mountain-bg {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      width: 100%; height: 200px;
+      pointer-events: none;
+    }
+
+    .secret-grid-bg {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,92,0,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,92,0,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    .secret-eyebrow {
+      font-size: 10px;
+      letter-spacing: 5px;
+      color: var(--stone);
+      font-weight: 700;
+      margin-bottom: 28px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .eye-dot {
+      width: 4px; height: 4px;
+      background: var(--orange);
+      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+      flex-shrink: 0;
+    }
+
+    .secret-lock-icon {
+      width: 48px; height: 48px;
+      margin-bottom: 18px;
+      position: relative; z-index: 2;
+    }
+
+    .secret-title {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 52px;
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: 8px;
+      line-height: 1;
+      text-align: center;
+      margin-bottom: 8px;
+      position: relative; z-index: 2;
+    }
+
+    .secret-title span { color: var(--orange); }
+
+    .secret-sub {
+      font-size: 10px;
+      color: var(--dim);
+      letter-spacing: 3px;
+      text-align: center;
+      line-height: 2.4;
+      margin-bottom: 32px;
+      position: relative; z-index: 2;
+    }
+
+    .secret-divider {
+      width: 40px; height: 2px;
+      background: var(--orange);
+      margin: 0 auto 28px;
+      position: relative; z-index: 2;
+    }
+
+    .secret-countdown {
+      display: flex;
+      gap: 3px;
+      align-items: stretch;
+      position: relative; z-index: 2;
+    }
+
+    .sc-block { display: flex; flex-direction: column; align-items: center; }
+
+    .sc-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 56px;
+      line-height: 1;
+      color: var(--white);
+      min-width: 68px;
+      text-align: center;
+      background: #0E0C09;
+      border: 1px solid var(--border2);
+      border-bottom: none;
+      padding: 10px 8px 6px;
+    }
+
+    .sc-label {
+      font-size: 8px;
+      letter-spacing: 3px;
+      color: var(--dim2);
+      font-weight: 700;
+      text-align: center;
+      background: #0E0C09;
+      border: 1px solid var(--border2);
+      border-top: 2px solid var(--orange);
+      width: 100%;
+      padding: 5px 0 7px;
+    }
+
+    .sc-sep {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 36px;
+      color: var(--border2);
+      display: flex;
+      align-items: center;
+      padding: 0 1px;
+      padding-top: 4px;
+    }
+
+    .secret-unlock-info {
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: var(--dim);
+      text-align: center;
+      margin-top: 22px;
+      font-weight: 700;
+      position: relative; z-index: 2;
+    }
+
+    .secret-bottom-tag {
+      position: absolute;
+      bottom: 24px; left: 0; right: 0;
+      display: flex;
+      align-items: center;
+      padding: 0 32px;
+      gap: 12px;
+    }
+
+    .sbt-line { flex: 1; height: 1px; background: var(--border); }
+    .sbt-text { font-size: 9px; letter-spacing: 3px; color: var(--dim); font-weight: 700; white-space: nowrap; }
+
+    /* ── PHASE 2: LAUNCH ── */
+    #launch-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 200;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #060504;
+      gap: 18px;
+      padding: 40px;
+      padding-bottom: 18vh;
+      overflow: hidden;
+    }
+
+    .launch-grid-bg {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,92,0,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,92,0,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    .launch-mountain-bg {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      width: 100%; height: 220px;
+      pointer-events: none;
+      opacity: 0.4;
+    }
+
+    .launch-label {
+      font-size: 10px;
+      letter-spacing: 5px;
+      color: var(--stone);
+      font-weight: 700;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative; z-index: 2;
+    }
+
+    .launch-title {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 48px;
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: 6px;
+      line-height: 1.15;
+      text-align: center;
+      position: relative; z-index: 2;
+    }
+
+    .launch-title span { color: var(--orange); }
+
+    .launch-title-h {
+      font-family: 'Bebas Neue', sans-serif;
+      color: var(--orange);
+      letter-spacing: 2px;
+    }
+
+    .launch-title-sub {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--stone);
+      letter-spacing: 10px;
+      text-align: center;
+      position: relative; z-index: 2;
+      margin-top: -4px;
+    }
+
+    .launch-sub {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 12px;
+      color: var(--dim2);
+      letter-spacing: 3px;
+      text-align: center;
+      position: relative; z-index: 2;
+    }
+
+    .launch-divider {
+      width: 40px; height: 2px;
+      background: var(--orange);
+      position: relative; z-index: 2;
+    }
+
+    #launch-btn {
+      margin-top: 8px;
+      background: transparent;
+      color: var(--orange);
+      border: 1px solid var(--orange);
+      cursor: pointer;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      letter-spacing: 8px;
+      white-space: nowrap;
+      padding: 18px 60px;
+      position: relative;
+      overflow: hidden;
+      clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+      z-index: 2;
+      transition: color 0.2s;
+    }
+
+    #launch-btn::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: var(--orange);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.25s ease;
+      z-index: 0;
+    }
+
+    #launch-btn:hover::before { transform: scaleX(1); }
+    #launch-btn:hover { color: #fff; }
+    #launch-btn:active { transform: scale(0.97); }
+    #launch-btn span { position: relative; z-index: 1; }
+
+    @keyframes btnPulse {
+      0%, 100% { border-color: var(--orange); box-shadow: 0 0 0 0 rgba(255,92,0,0); }
+      50%       { border-color: rgba(255,92,0,0.4); box-shadow: 0 0 20px 4px rgba(255,92,0,0.08); }
+    }
+    #launch-btn { animation: btnPulse 2.4s ease infinite; }
+
+    .launch-hint {
+      font-size: 9px;
+      letter-spacing: 4px;
+      color: var(--dim);
+      font-weight: 700;
+      text-align: center;
+      position: relative; z-index: 2;
+    }
+
+    /* ── PHASE 3: LIVE COUNTDOWN ── */
+    #live-countdown {
+      display: none;
+      background: var(--bg-mid);
+      border-bottom: 1px solid var(--border2);
+      padding: 14px 24px 12px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .lc-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .lc-label {
+      font-size: 8px;
+      letter-spacing: 4px;
+      color: var(--dim2);
+      font-weight: 700;
+    }
+
+    .lc-status {
+      font-size: 8px;
+      letter-spacing: 3px;
+      color: var(--orange);
+      font-weight: 700;
+    }
+
+    .lc-timer { display: flex; align-items: flex-end; gap: 0; }
+
+    .lc-seg { display: flex; flex-direction: column; align-items: center; }
+
+    .lc-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 64px;
+      line-height: 0.9;
+      color: var(--stone);
+      min-width: 60px;
+      text-align: center;
+      letter-spacing: -1px;
+      transition: color 0.3s;
+    }
+
+    .lc-num.urgent { color: var(--orange); }
+
+    .lc-unit {
+      font-size: 8px;
+      letter-spacing: 3px;
+      color: var(--dim2);
+      font-weight: 700;
+      margin-top: 3px;
+    }
+
+    .lc-colon {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 44px;
+      color: var(--border2);
+      padding: 0 2px;
+      padding-bottom: 14px;
+      line-height: 1;
+    }
+
+    .lc-progress {
+      margin-top: 10px;
+      height: 2px;
+      background: var(--border);
+      width: 100%;
+    }
+
+    .lc-progress-bar {
+      height: 100%;
+      background: var(--lime);
+      transition: width 1s linear, background 1s;
+    }
+
+    .lc-progress-bar.urgent { background: var(--orange); }
+
+    /* ── TOAST ── */
+    #unlock-toast {
+      display: none;
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--orange);
+      color: #fff;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      padding: 10px 24px;
+      z-index: 999;
+      white-space: nowrap;
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+      to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+    @keyframes toastOut {
+      from { opacity: 1; }
+      to   { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="unlock-toast"></div>
+
+<div class="poster" id="poster">
+
+  <!-- ══ PHASE 1: SECRET ══ -->
+  <div id="secret-overlay">
+
+    <div class="secret-grid-bg"></div>
+
+    <svg class="secret-mountain-bg" viewBox="0 0 480 200" preserveAspectRatio="xMidYMax meet">
+      <path d="M0,140 L80,75 L140,105 L200,42 L265,82 L315,28 L385,68 L435,46 L480,64 L480,200 L0,200 Z" fill="#0F0D09"/>
+      <path d="M0,162 L60,122 L118,138 L178,96 L245,124 L298,72 L368,106 L424,88 L480,102 L480,200 L0,200 Z" fill="#0A0806"/>
+      <path d="M0,140 L80,75 L140,105 L200,42 L265,82 L315,28 L385,68 L435,46 L480,64" fill="none" stroke="#1E1A12" stroke-width="0.8"/>
+    </svg>
+
+    <div class="secret-eyebrow">
+      <span class="eye-dot"></span>
+      寻迹莫干山 · 记路家计划
+      <span class="eye-dot"></span>
+    </div>
+
+    <svg class="secret-lock-icon" viewBox="0 0 48 48" fill="none">
+      <rect x="10" y="26" width="28" height="18" rx="1" stroke="#2A2420" stroke-width="1.2"/>
+      <path d="M18 26V22C18 18.686 20.686 16 24 16C27.314 16 30 18.686 30 22V26" stroke="#2A2420" stroke-width="1.2" stroke-linecap="square"/>
+      <circle cx="24" cy="35" r="3" fill="#FF5C00"/>
+      <line x1="24" y1="38" x2="24" y2="41" stroke="#FF5C00" stroke-width="1.5"/>
+      <path d="M20 22L24 14L28 22" stroke="#FF5C00" stroke-width="1" opacity="0.5"/>
+    </svg>
+
+    <div class="secret-title">行程<span>保密</span>中</div>
+    <div class="secret-sub">
+      48-HOUR COUNTDOWN · MOGANSHAN<br>
+      北京时间 2026年7月3日 14:00 解锁
+    </div>
+
+    <div class="secret-divider"></div>
+
+    <div class="secret-countdown">
+      <div class="sc-block">
+        <div class="sc-num" id="sc-days">--</div>
+        <div class="sc-label">DAYS</div>
+      </div>
+      <div class="sc-sep">:</div>
+      <div class="sc-block">
+        <div class="sc-num" id="sc-hours">--</div>
+        <div class="sc-label">HRS</div>
+      </div>
+      <div class="sc-sep">:</div>
+      <div class="sc-block">
+        <div class="sc-num" id="sc-mins">--</div>
+        <div class="sc-label">MIN</div>
+      </div>
+      <div class="sc-sep">:</div>
+      <div class="sc-block">
+        <div class="sc-num" id="sc-secs">--</div>
+        <div class="sc-label">SEC</div>
+      </div>
+    </div>
+
+    <div class="secret-unlock-info">UNLOCK AT T-MINUS 48:00:00</div>
+
+    <div class="secret-bottom-tag">
+      <div class="sbt-line"></div>
+      <div class="sbt-text">MOGANSHAN · OUTDOOR · TRAIL · RUN</div>
+      <div class="sbt-line"></div>
+    </div>
+  </div>
+
+  <!-- ══ PHASE 2: LAUNCH ══ -->
+  <div id="launch-overlay">
+
+    <div class="launch-grid-bg"></div>
+
+    <svg class="launch-mountain-bg" viewBox="0 0 480 220" preserveAspectRatio="xMidYMax meet">
+      <path d="M0,150 L85,80 L145,110 L205,48 L275,88 L325,36 L395,80 L445,58 L480,76 L480,220 L0,220 Z" fill="#1A1410"/>
+      <path d="M0,168 L65,124 L125,140 L185,92 L255,126 L308,78 L378,112 L434,90 L480,106 L480,220 L0,220 Z" fill="#100E08"/>
+      <path d="M0,150 L85,80 L145,110 L205,48 L275,88 L325,36 L395,80 L445,58 L480,76" fill="none" stroke="#2A2218" stroke-width="0.7"/>
+    </svg>
+
+    <div class="launch-label">
+      <span class="eye-dot"></span>
+      MISSION READY · 任务就绪
+      <span class="eye-dot"></span>
+    </div>
+
+    <div class="launch-title">48<span class="launch-title-h">H</span> <span>倒计时</span></div>
+    <div class="launch-title-sub">城市落跑计划</div>
+
+    <div class="launch-divider"></div>
+
+    <button id="launch-btn" onclick="startCountdown()"><span>▶ 启动倒计时</span></button>
+
+    <div class="launch-hint">MOGANSHAN · OUTDOOR · TRAIL · RUN</div>
+  </div>
+
+  <!-- ══ PHASE 3: LIVE COUNTDOWN BAR ══ -->
+  <div id="live-countdown">
+    <div class="lc-header">
+      <div class="lc-label">T-MINUS · 剩余时间</div>
+      <div class="lc-status">● LIVE</div>
+    </div>
+    <div class="lc-timer">
+      <div class="lc-seg">
+        <div class="lc-num" id="lc-h">48</div>
+        <div class="lc-unit">HRS</div>
+      </div>
+      <div class="lc-colon">:</div>
+      <div class="lc-seg">
+        <div class="lc-num" id="lc-m">00</div>
+        <div class="lc-unit">MIN</div>
+      </div>
+      <div class="lc-colon">:</div>
+      <div class="lc-seg">
+        <div class="lc-num" id="lc-s">00</div>
+        <div class="lc-unit">SEC</div>
+      </div>
+    </div>
+    <div class="lc-progress">
+      <div class="lc-progress-bar" id="lc-bar" style="width:100%"></div>
+    </div>
+  </div>
+
+  <!-- ══ HEADER ══ -->
+  <div class="poster-header">
+    <div class="bg-stroke">48</div>
+
+    <svg class="mountain-svg" viewBox="0 0 480 80" preserveAspectRatio="none">
+      <path d="M0,62 L55,38 L105,52 L165,22 L225,44 L278,14 L338,40 L388,24 L438,46 L480,32 L480,80 L0,80 Z" fill="#18140E"/>
+      <path d="M0,72 L38,56 L88,66 L148,38 L208,58 L258,30 L308,52 L368,36 L428,56 L480,44 L480,80 L0,80 Z" fill="#100E09"/>
+      <path d="M0,66 L55,44 L105,56 L165,28 L225,49 L278,20 L338,44 L388,28 L438,50 L480,37" fill="none" stroke="#22200F" stroke-width="0.6"/>
+    </svg>
+
+    <div class="header-inner">
+      <div class="header-eyebrow">
+        <span class="eyebrow-dot"></span>
+        <span class="eyebrow-text">寻迹莫干山 · 记路家计划</span>
+        <span class="eyebrow-dot"></span>
+      </div>
+
+      <div class="header-num-wrap">
+        <div class="header-big-num">48</div>
+        <div class="header-unit-stack">
+          <div class="unit-hrs-row">
+            <span class="unit-hrs">HRS</span>
+            <span class="unit-cn">倒计时</span>
+          </div>
+          <div class="unit-sub">COUNTDOWN</div>
+        </div>
+      </div>
+
+      <div class="header-title-cn">城市落跑计划</div>
+      <div class="header-subtitle">48-HOUR COUNTDOWN URBAN RUNNING PLAN</div>
+
+      <div class="slogan-block">
+        <div class="slogan-main">寻找懂运动又专业的你</div>
+        <div class="slogan-sub">玩出运动的正确生活方式</div>
+      </div>
+
+      <div class="orgs">
+        <div class="org-tag">莫干山户外运动协会</div>
+        <div class="org-tag">山野梦想家</div>
+        <div class="org-tag">DEEPBEAT 记路家</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- accent bar -->
+  <div class="accent-bar">
+    <div style="flex:5;background:#FF5C00"></div>
+    <div style="flex:1;background:#C4E000;margin-left:2px"></div>
+    <div style="flex:2;background:#1A1C14;margin-left:2px"></div>
+    <div style="flex:4;background:#0A0908;margin-left:2px"></div>
+  </div>
+
+
+  <!-- ══ TIMELINE ══ -->
+  <div class="timeline">
+
+    <!-- DAY 01 -->
+    <div class="day-section day-locked" data-day="1">
+      <div class="day-label day3">
+        <span class="day-label-accent">DAY 01</span>
+        <span style="font-size:9px;letter-spacing:3px;color:var(--dim2);">· 7月3日</span>
+        <div class="day-label-line"></div>
+      </div>
+
+      <div class="day-countdown-banner dcb-lime">
+        <div class="dcb-label">距离倒计时结束</div>
+        <div class="dcb-row">
+          <div class="dcb-num-wrap">
+            <span class="dcb-num">48</span>
+            <span class="dcb-unit">小时</span>
+          </div>
+          <div class="dcb-right">
+            <div class="dcb-sub">COUNTDOWN BEGINS · T-MINUS 48:00</div>
+            <div class="dcb-bar"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="events-wrapper ew-lime">
+        <div class="event-row locked" data-tminus="48" data-day="1">
+          <div class="time-col">
+            <div class="time-label">TIME</div>
+            <div class="time-value">14:00</div>
+          </div>
+          <div class="event-divider"></div>
+          <div class="event-col">
+            <div class="event-phase">ARRIVAL / 抵达</div>
+            <div class="event-name">入住酒店<br>探路者大礼包</div>
+          </div>
+          <div class="tminus-col">
+            <div class="tminus-label">T-MINUS</div>
+            <div class="tminus-value cv-lime">48:00</div>
+            <div class="tminus-bar"></div>
+          </div>
+        </div>
+
+        <div class="event-row locked" data-tminus="47" data-day="1">
+          <div class="time-col">
+            <div class="time-label">TIME</div>
+            <div class="time-value">15:00</div>
+          </div>
+          <div class="event-divider"></div>
+          <div class="event-col">
+            <div class="event-phase">MISSION / 解密</div>
+            <div class="event-name">任务卡解密<br>寻找莫干山传承人</div>
+          </div>
+          <div class="tminus-col">
+            <div class="tminus-label">T-MINUS</div>
+            <div class="tminus-value cv-lime">47:00</div>
+            <div class="tminus-bar"></div>
+          </div>
+        </div>
+
+        <div class="event-row locked" data-tminus="42" data-day="1">
+          <div class="time-col">
+            <div class="time-label">TIME</div>
+            <div class="time-value">20:00</div>
+          </div>
+          <div class="event-divider"></div>
+          <div class="event-col">
+            <div class="event-phase">DESIGN / 规划</div>
+            <div class="event-name">自主线路设计</div>
+          </div>
+          <div class="tminus-col">
+            <div class="tminus-label">T-MINUS</div>
+            <div class="tminus-value cv-lime">42:00</div>
+            <div class="tminus-bar"></div>
+          </div>
+        </div>
+
+        <div class="event-row locked" data-tminus="40" data-day="1">
+          <div class="time-col">
+            <div class="time-label">TIME</div>
+            <div class="time-value">22:00</div>
+          </div>
+          <div class="event-divider"></div>
+          <div class="event-col">
+            <div class="event-phase">REST / 晚安</div>
+            <div class="event-name">晚安礼</div>
+          </div>
+          <div class="tminus-col">
+            <div class="tminus-label">T-MINUS</div>
+            <div class="tminus-value cv-lime">40:00</div>
+            <div class="tminus-bar"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 02 -->
+    <div class="day-section day-locked" data-day="2">
+      <div class="day-label day4">
+        <span class="day-label-accent">DAY 02</span>
+        <span style="font-size:9px;letter-spacing:3px;color:var(--dim2);">· 7月4日</span>
+        <div class="day-label-line"></div>
+      </div>
+
+      <div class="day-countdown-banner dcb-orange">
+        <div class="dcb-label">距离倒计时结束</div>
+        <div class="dcb-row">
+          <div class="dcb-num-wrap">
+            <span class="dcb-num">29</span>
+            <span class="dcb-unit">小时</span>
+          </div>
+          <div class="dcb-right">
+            <div class="dcb-sub">RACE DAY · T-MINUS 29:00</div>
+            <div class="dcb-bar"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="events-wrapper ew-orange">
+        <div class="event-row locked" data-tminus="29" data-day="2">
+          <div class="time-col">
+            <div class="time-label">TIME</div>
+            <div class="time-value">09:00</div>
+          </div>
+          <div class="event-divider"></div>
+          <div class="event-col">
+            <div class="event-phase">TRAINING / 训练</div>
+            <div class="event-name">山野视觉教学课程</div>
+          </div>
+          <div class="tminus-col">
+            <div class="tminus-label">T-MINUS</div>
+            <div class="tminus-value cv-orange">29:00</div>
+            <div class="tminus-bar"></div>
+          </div>
+        </div>
+
+        <div class="event-row locked" data-tminus="25" data-day="2">
+          <div class="time-col">
+            <div class="time-label">TIME</div>
+            <div class="time-value">13:00</div>
+          </div>
+          <div class="event-divider"></div>
+          <div class="event-col">
+            <div class="event-phase">HYPOXIA / 训练</div>
+            <div class="event-name">被动训练<br>高低氧循环</div>
+          </div>
+          <div class="tminus-col">
+            <div class="tminus-label">T-MINUS</div>
+            <div class="tminus-value cv-orange">25:00</div>
+            <div class="tminus-bar"></div>
+          </div>
+        </div>
+
+        <div class="event-row locked" data-tminus="22" data-day="2">
+          <div class="time-col">
+            <div class="time-label">TIME</div>
+            <div class="time-value">16:00</div>
+          </div>
+          <div class="event-divider"></div>
+          <div class="event-col">
+            <div class="event-phase">RACE / 赛事</div>
+            <div class="event-name">落日追光跑</div>
+          </div>
+          <div class="tminus-col">
+            <div class="tminus-label">T-MINUS</div>
+            <div class="tminus-value cv-orange">22:00</div>
+            <div class="tminus-bar"></div>
+          </div>
+        </div>
+
+        <div class="event-row locked" data-tminus="19" data-day="2">
+          <div class="time-col">
+            <div class="time-label">TIME</div>
+            <div class="time-value">19:00</div>
+          </div>
+          <div class="event-divider"></div>
+          <div class="event-col">
+            <div class="event-phase">CEREMONY / 晚宴</div>
+            <div class="event-name">篝火晚会 · 晚宴<br>分享会</div>
+          </div>
+          <div class="tminus-col">
+            <div class="tminus-label">T-MINUS</div>
+            <div class="tminus-value cv-orange">19:00</div>
+            <div class="tminus-bar"></div>
+          </div>
+        </div>
+
+        <div class="event-row locked" data-tminus="17" data-day="2">
+          <div class="time-col">
+            <div class="time-label">TIME</div>
+            <div class="time-value">21:00</div>
+          </div>
+          <div class="event-divider"></div>
+          <div class="event-col">
+            <div class="event-phase">RECOVERY / 恢复</div>
+            <div class="event-name">运动恢复<br>晚安礼</div>
+          </div>
+          <div class="tminus-col">
+            <div class="tminus-label">T-MINUS</div>
+            <div class="tminus-value cv-orange">17:00</div>
+            <div class="tminus-bar"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 03 -->
+    <div class="day-section day-locked" data-day="3">
+      <div class="day-label day5">
+        <span class="day-label-accent">DAY 03</span>
+        <span style="font-size:9px;letter-spacing:3px;color:var(--dim2);">· 7月5日</span>
+        <div class="day-label-line"></div>
+      </div>
+
+      <div class="day-countdown-banner dcb-teal">
+        <div class="dcb-label">距离倒计时结束</div>
+        <div class="dcb-row">
+          <div class="dcb-num-wrap">
+            <span class="dcb-num">05</span>
+            <span class="dcb-unit">小时</span>
+          </div>
+          <div class="dcb-right">
+            <div class="dcb-sub">FINAL DAY · T-MINUS 05:00</div>
+            <div class="dcb-bar"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="events-wrapper ew-teal">
+        <div class="event-row locked" data-tminus="5" data-day="3">
+          <div class="time-col">
+            <div class="time-label">TIME</div>
+            <div class="time-value">09:00</div>
+          </div>
+          <div class="event-divider"></div>
+          <div class="event-col">
+            <div class="event-phase">TRIAL / 试跑</div>
+            <div class="event-name">设计路线试跑</div>
+          </div>
+          <div class="tminus-col">
+            <div class="tminus-label">T-MINUS</div>
+            <div class="tminus-value cv-teal">05:00</div>
+            <div class="tminus-bar"></div>
+          </div>
+        </div>
+
+        <div class="event-row locked" data-tminus="1" data-day="3">
+          <div class="time-col">
+            <div class="time-label">TIME</div>
+            <div class="time-value">13:00</div>
+          </div>
+          <div class="event-divider"></div>
+          <div class="event-col">
+            <div class="event-phase">AWARD / 颁奖</div>
+            <div class="event-name">证书颁发<br>认证总结会</div>
+          </div>
+          <div class="tminus-col">
+            <div class="tminus-label">T-MINUS</div>
+            <div class="tminus-value cv-teal">01:00</div>
+            <div class="tminus-bar"></div>
+          </div>
+        </div>
+
+        <div class="event-row locked" data-tminus="0" data-day="3">
+          <div class="time-col">
+            <div class="time-label">TIME</div>
+            <div class="time-value">14:00</div>
+          </div>
+          <div class="event-divider"></div>
+          <div class="event-col">
+            <div class="event-phase">COMPLETE / 结束</div>
+            <div class="event-name">倒计时结束<br>各自回程</div>
+          </div>
+          <div class="tminus-col">
+            <div class="tminus-label">T-MINUS</div>
+            <div class="tminus-value cv-teal">00:00</div>
+            <div class="tminus-bar"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="schedule-notice">
+    <span class="notice-icon">※</span>
+    主办方会根据场地时间等因素适当调整当日行程
+  </div>
+
+  <div class="poster-footer">
+    <div class="footer-logo">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+        <path d="M10 2L14 8H16L10 18L4 8H6L10 2Z" fill="none" stroke="#3A3530" stroke-width="1" stroke-linejoin="round"/>
+        <path d="M10 6L12 9H8L10 6Z" fill="#FF5C00" opacity="0.7"/>
+      </svg>
+      <span class="footer-brand">MOGANSHAN</span>
+    </div>
+    <div class="footer-line"></div>
+    <div class="footer-right">OUTDOOR · TRAIL · RUN</div>
+  </div>
+
+</div>
+
+<button id="admin-btn" onclick="adminUnlock()" style="position:fixed;bottom:12px;right:12px;background:none;border:none;color:#333;font-size:9px;letter-spacing:2px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;opacity:0.2;z-index:9999;padding:8px;">ADMIN</button>
+
+<script>
+  function now() {
+    const sim = localStorage.getItem('48h_sim_time');
+    return sim ? new Date(sim).getTime() : Date.now();
+  }
+
+  const ANCHOR   = new Date('2026-07-03T06:00:00Z');
+  const TOTAL_MS = 48 * 60 * 60 * 1000;
+
+  const secretOverlay = document.getElementById('secret-overlay');
+  const launchOverlay  = document.getElementById('launch-overlay');
+  const liveCountdown  = document.getElementById('live-countdown');
+  const toast          = document.getElementById('unlock-toast');
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function getPhase() {
+    const t = now();
+    if (t < ANCHOR.getTime()) return 'secret';
+    if (!localStorage.getItem('48h_launched')) return 'ready';
+    return 'running';
+  }
+
+  const DAY_UNLOCK_UTC = {
+    1: new Date('2026-07-03T06:00:00Z').getTime(),
+    2: new Date('2026-07-03T16:00:00Z').getTime(),
+    3: new Date('2026-07-04T16:00:00Z').getTime(),
+  };
+
+  function getUnlockedDayCount() {
+    let count = 1;
+    const t = now();
+    if (t >= DAY_UNLOCK_UTC[2]) count = 2;
+    if (t >= DAY_UNLOCK_UTC[3]) count = 3;
+    return count;
+  }
+
+  function unlockDays(upToDay, animate) {
+    for (let d = 1; d <= upToDay; d++) {
+      const section = document.querySelector(`.day-section[data-day="${d}"]`);
+      if (!section) continue;
+      const wasLocked = section.classList.contains('day-locked');
+      section.classList.remove('day-locked');
+
+      section.querySelectorAll('.event-row.locked').forEach((row, i) => {
+        row.classList.remove('locked');
+        if (animate && wasLocked) {
+          const delay = i * 200;
+          setTimeout(() => {
+            row.classList.add('unlocking');
+            setTimeout(() => row.classList.remove('unlocking'), 1400);
+          }, delay);
+        }
+      });
+
+      if (animate && wasLocked) {
+        const dayLabel = section.querySelector('.day-label');
+        const dayName = dayLabel ? dayLabel.textContent.trim() : `DAY 0${d}`;
+        setTimeout(() => showToast('已解锁 ' + dayName.split('\n')[0].trim()), 0);
+      }
+    }
+  }
+
+  function scheduleMidnightCheck() {
+    const t = now();
+    const currentUnlocked = getUnlockedDayCount();
+    unlockDays(currentUnlocked, false);
+
+    let nextUnlock = null;
+    for (let d = currentUnlocked + 1; d <= 3; d++) {
+      if (DAY_UNLOCK_UTC[d] > t) { nextUnlock = DAY_UNLOCK_UTC[d]; break; }
+    }
+    if (!nextUnlock) return;
+
+    const delay = Math.min(nextUnlock - t + 500, 60000);
+    setTimeout(() => {
+      const newUnlocked = getUnlockedDayCount();
+      if (newUnlocked > currentUnlocked) unlockDays(newUnlocked, true);
+      scheduleMidnightCheck();
+    }, delay);
+  }
+
+  let toastTimer;
+  function showToast(text) {
+    clearTimeout(toastTimer);
+    toast.textContent = '◆ ' + text;
+    toast.style.display = 'block';
+    toast.style.animation = 'toastIn 0.3s ease';
+    toastTimer = setTimeout(() => {
+      toast.style.animation = 'toastOut 0.4s ease forwards';
+      setTimeout(() => { toast.style.display = 'none'; }, 400);
+    }, 3000);
+  }
+
+  function runSecretPhase() {
+    secretOverlay.style.display = 'flex';
+    launchOverlay.style.display = 'none';
+    liveCountdown.style.display = 'none';
+
+    function tick() {
+      const remaining = ANCHOR.getTime() - now();
+      if (remaining <= 0) {
+        secretOverlay.style.display = 'none';
+        runReadyPhase();
+        return;
+      }
+      const d = Math.floor(remaining / 86400000);
+      const h = Math.floor((remaining % 86400000) / 3600000);
+      const m = Math.floor((remaining % 3600000) / 60000);
+      const s = Math.floor((remaining % 60000) / 1000);
+      document.getElementById('sc-days').textContent  = pad(d);
+      document.getElementById('sc-hours').textContent = pad(h);
+      document.getElementById('sc-mins').textContent  = pad(m);
+      document.getElementById('sc-secs').textContent  = pad(s);
+      setTimeout(tick, 1000);
+    }
+    tick();
+  }
+
+  function runReadyPhase() {
+    secretOverlay.style.display = 'none';
+    launchOverlay.style.display = 'flex';
+    liveCountdown.style.display = 'none';
+  }
+
+  function startCountdown() {
+    localStorage.setItem('48h_launched', '1');
+
+    const launchInner = launchOverlay.querySelectorAll('.launch-label, .launch-title, .launch-sub, #launch-btn, .launch-hint, .launch-divider');
+    launchInner.forEach(el => { el.style.transition = 'opacity 0.5s'; el.style.opacity = '0'; });
+
+    setTimeout(() => {
+      const msg = document.createElement('div');
+      msg.textContent = '准备跟我一起城市落跑了吗';
+      msg.style.cssText = 'font-family:"Noto Sans SC",sans-serif;font-size:22px;font-weight:700;color:#F5EEE4;letter-spacing:6px;text-align:center;opacity:0;transition:opacity 0.8s ease;position:relative;z-index:2;';
+      launchOverlay.appendChild(msg);
+      requestAnimationFrame(() => requestAnimationFrame(() => { msg.style.opacity = '1'; }));
+
+      setTimeout(() => {
+        msg.style.opacity = '0';
+        setTimeout(() => {
+          launchOverlay.style.transition = 'opacity 0.6s ease';
+          launchOverlay.style.opacity = '0';
+          setTimeout(() => {
+            launchOverlay.style.display = 'none';
+            launchOverlay.style.opacity = '';
+            launchOverlay.style.transition = '';
+            runRunningPhase();
+          }, 650);
+        }, 1200);
+      }, 1800);
+    }, 600);
+  }
+
+  function runRunningPhase() {
+    secretOverlay.style.display = 'none';
+    launchOverlay.style.display = 'none';
+    liveCountdown.style.display = 'block';
+
+    const daysToUnlock = adminMode ? 3 : getUnlockedDayCount();
+    unlockDays(daysToUnlock, false);
+    if (!adminMode) scheduleMidnightCheck();
+
+    function tick() {
+      const t = now();
+      const elapsed = t - ANCHOR.getTime();
+      const remaining = TOTAL_MS - elapsed;
+
+      if (remaining <= 0) {
+        document.getElementById('lc-h').textContent = '00';
+        document.getElementById('lc-m').textContent = '00';
+        document.getElementById('lc-s').textContent = '00';
+        document.getElementById('lc-bar').style.width = '0%';
+        unlockDays(3, false);
+        return;
+      }
+
+      const totalSec = Math.ceil(remaining / 1000);
+      const hh = Math.floor(totalSec / 3600);
+      const mm = Math.floor((totalSec % 3600) / 60);
+      const ss = totalSec % 60;
+
+      const hEl = document.getElementById('lc-h');
+      const mEl = document.getElementById('lc-m');
+      const sEl = document.getElementById('lc-s');
+      const bar = document.getElementById('lc-bar');
+
+      hEl.textContent = pad(hh);
+      mEl.textContent = pad(mm);
+      sEl.textContent = pad(ss);
+
+      const urgent = hh < 6;
+      hEl.classList.toggle('urgent', urgent);
+      mEl.classList.toggle('urgent', urgent);
+      sEl.classList.toggle('urgent', urgent);
+      bar.classList.toggle('urgent', urgent);
+
+      bar.style.width = ((remaining / TOTAL_MS) * 100).toFixed(2) + '%';
+      setTimeout(tick, 1000);
+    }
+    tick();
+  }
+
+  let adminMode = false;
+
+  function adminUnlock() {
+    const pwd = prompt('管理员密码');
+    if (pwd !== '20260703') {
+      if (pwd !== null) alert('密码错误');
+      return;
+    }
+    adminMode = true;
+    localStorage.setItem('48h_launched', '1');
+    secretOverlay.style.display = 'none';
+    launchOverlay.style.display = 'flex';
+    liveCountdown.style.display = 'none';
+  }
+
+  (function init() {
+    const phase = getPhase();
+    if (phase === 'secret')       runSecretPhase();
+    else if (phase === 'ready')   runReadyPhase();
+    else                          runRunningPhase();
+  })();
+</script>
+</body>
+</html>
