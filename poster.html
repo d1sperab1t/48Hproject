@@ -970,6 +970,19 @@
       from { opacity: 1; }
       to   { opacity: 0; }
     }
+
+    @media (max-width: 600px) {
+      :root {
+        --border:  #161410;
+        --border2: #1C1A14;
+      }
+      .bg-stroke {
+        -webkit-text-stroke: 1px #0E0C08;
+      }
+      .secret-grid-bg {
+        opacity: 0.4;
+      }
+    }
   </style>
 </head>
 <body>
