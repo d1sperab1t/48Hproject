@@ -1108,9 +1108,6 @@
         <div class="lc-unit">SEC</div>
       </div>
     </div>
-    <div class="lc-progress">
-      <div class="lc-progress-bar" id="lc-bar" style="width:100%"></div>
-    </div>
   </div>
 
   <!-- ══ HEADER ══ -->
@@ -1598,7 +1595,7 @@
   function startCountdown() {
     localStorage.setItem('48h_launched', '1');
 
-    const launchInner = launchOverlay.querySelectorAll('.launch-label, .launch-title, .launch-sub, #launch-btn, .launch-hint, .launch-divider');
+    const launchInner = launchOverlay.querySelectorAll('.launch-label, .launch-title, .launch-title-sub, #launch-btn, .launch-hint, .launch-divider');
     launchInner.forEach(el => { el.style.transition = 'opacity 0.5s'; el.style.opacity = '0'; });
 
     setTimeout(() => {
