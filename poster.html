@@ -1665,7 +1665,7 @@
 
     setTimeout(() => {
       const msg = document.createElement('div');
-      msg.textContent = '准备跟我一起城市落跑了吗';
+      msg.innerHTML = '准备跟我一起<br>城市落跑了吗';
       msg.style.cssText = 'font-family:"Noto Sans SC",sans-serif;font-size:22px;font-weight:700;color:#F5EEE4;letter-spacing:6px;text-align:center;opacity:0;transition:opacity 0.8s ease;position:relative;z-index:2;';
       launchOverlay.appendChild(msg);
       requestAnimationFrame(() => requestAnimationFrame(() => { msg.style.opacity = '1'; }));
