@@ -573,6 +573,49 @@
       font-weight: 700;
     }
 
+    .footer-inv-link {
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--dim2);
+      text-decoration: none;
+      font-weight: 700;
+      padding: 4px 10px;
+      border: 1px solid var(--border);
+      transition: color 0.2s, border-color 0.2s;
+      white-space: nowrap;
+    }
+
+    .footer-inv-link:hover {
+      color: var(--orange);
+      border-color: var(--orange);
+    }
+
+    /* ── FIXED NAV ── */
+    .fixed-nav {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 9999;
+    }
+
+    .fixed-nav a {
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--dim2);
+      text-decoration: none;
+      font-weight: 700;
+      padding: 6px 12px;
+      border: 1px solid var(--border);
+      transition: color 0.2s, border-color 0.2s;
+      background: rgba(8,7,6,0.85);
+      backdrop-filter: blur(4px);
+    }
+
+    .fixed-nav a:hover {
+      color: var(--orange);
+      border-color: var(--orange);
+    }
+
     /* ══ OVERLAYS ══ */
 
     /* ── PHASE 1: SECRET ── */
@@ -992,6 +1035,10 @@
 <body>
 
 <div id="unlock-toast"></div>
+
+<div class="fixed-nav">
+  <a href="invitation.html">← 返回邀请函</a>
+</div>
 
 <div class="poster" id="poster">
 
@@ -1460,6 +1507,7 @@
       <span class="footer-brand">MOGANSHAN</span>
     </div>
     <div class="footer-line"></div>
+    <a href="invitation.html" class="footer-inv-link">邀请函 ←</a>
     <div class="footer-right">OUTDOOR · TRAIL · RUN</div>
   </div>
 

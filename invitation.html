@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>邀请函 · 48小时倒计时城市落跑计划</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;1,700&family=Noto+Sans+SC:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:      #080706;
+      --bg-mid:  #0F0D0A;
+      --bg-card: #131109;
+      --border:  #222018;
+      --border2: #2E2A22;
+      --orange:  #FF5C00;
+      --orange2: #FF8040;
+      --lime:    #C4E000;
+      --teal:    #00C8B4;
+      --white:   #F5EEE4;
+      --stone:   #7A6E60;
+      --dim:     #3E3830;
+      --dim2:    #524840;
+    }
+
+    body {
+      background: #050403;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 48px 20px;
+      font-family: 'Barlow Condensed', 'Noto Sans SC', sans-serif;
+    }
+
+    .invitation {
+      background: var(--bg);
+      color: var(--white);
+      width: 480px;
+      overflow: hidden;
+      border: 1px solid var(--border2);
+      position: relative;
+    }
+
+    /* ── GRID BACKGROUND ── */
+    .inv-grid-bg {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,92,0,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,92,0,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* ── MOUNTAIN SVG ── */
+    .inv-mountain {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      width: 100%; height: 180px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* ── HEADER SECTION ── */
+    .inv-header {
+      position: relative;
+      padding: 48px 36px 40px;
+      text-align: center;
+      z-index: 2;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .inv-eyebrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .eye-dot {
+      width: 4px; height: 4px;
+      background: var(--orange);
+      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+      flex-shrink: 0;
+    }
+
+    .eyebrow-text {
+      font-size: 10px;
+      letter-spacing: 5px;
+      color: var(--stone);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .inv-icon {
+      width: 56px; height: 56px;
+      margin: 0 auto 24px;
+    }
+
+    .inv-title-label {
+      font-size: 10px;
+      letter-spacing: 6px;
+      color: var(--dim2);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .inv-title {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 42px;
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: 6px;
+      line-height: 1.15;
+      margin-bottom: 6px;
+    }
+
+    .inv-title span { color: var(--orange); }
+
+    .inv-title-en {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 18px;
+      letter-spacing: 6px;
+      color: var(--dim2);
+      margin-bottom: 28px;
+    }
+
+    .inv-divider {
+      width: 40px; height: 2px;
+      background: var(--orange);
+      margin: 0 auto 24px;
+    }
+
+    .inv-greeting {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 14px;
+      color: var(--stone);
+      letter-spacing: 2px;
+      line-height: 2;
+      text-align: center;
+    }
+
+    /* ── ACCENT BAR ── */
+    .accent-bar {
+      display: flex;
+      height: 4px;
+    }
+
+    /* ── EVENT INFO SECTION ── */
+    .inv-section {
+      position: relative;
+      z-index: 2;
+      padding: 32px 36px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .inv-section:last-of-type {
+      border-bottom: none;
+    }
+
+    .section-label {
+      font-size: 9px;
+      letter-spacing: 4px;
+      color: var(--dim2);
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* Info Cards */
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .info-card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .info-card.wide {
+      grid-column: 1 / -1;
+    }
+
+    .info-card-label {
+      font-size: 8px;
+      letter-spacing: 3px;
+      color: var(--dim2);
+      font-weight: 700;
+    }
+
+    .info-card-value {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 2px;
+      color: var(--white);
+      line-height: 1;
+    }
+
+    .info-card-value.cn {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .info-card-sub {
+      font-size: 9px;
+      color: var(--dim2);
+      letter-spacing: 1px;
+    }
+
+    .info-card.accent {
+      border-color: var(--orange);
+      background: rgba(255,92,0,0.04);
+    }
+
+    .info-card.accent .info-card-value { color: var(--orange); }
+
+    /* ── HIGHLIGHTS ── */
+    .highlights {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .highlight-row {
+      display: flex;
+      align-items: stretch;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .highlight-row:last-child { border-bottom: none; }
+
+    .hl-num {
+      width: 56px;
+      min-width: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      color: var(--orange);
+      background: rgba(255,92,0,0.04);
+      border-right: 1px solid var(--border);
+    }
+
+    .hl-content {
+      flex: 1;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 3px;
+    }
+
+    .hl-title {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: 1px;
+    }
+
+    .hl-desc {
+      font-size: 10px;
+      color: var(--dim2);
+      letter-spacing: 1px;
+      line-height: 1.6;
+    }
+
+    /* ── TIMELINE MINI ── */
+    .timeline-mini {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .tm-day {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tm-day:last-child { border-bottom: none; }
+
+    .tm-day-label {
+      width: 80px;
+      min-width: 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 0;
+      border-right: 1px solid var(--border);
+      gap: 4px;
+    }
+
+    .tm-day-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .tm-day-date {
+      font-size: 8px;
+      letter-spacing: 2px;
+      color: var(--dim2);
+      font-weight: 700;
+    }
+
+    .tm-day.d-lime .tm-day-num { color: var(--lime); }
+    .tm-day.d-orange .tm-day-num { color: var(--orange); }
+    .tm-day.d-teal .tm-day-num { color: var(--teal); }
+
+    .tm-events {
+      flex: 1;
+      padding: 10px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .tm-event {
+      font-size: 11px;
+      color: var(--stone);
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tm-event::before {
+      content: '';
+      width: 3px; height: 3px;
+      background: var(--dim2);
+      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+      flex-shrink: 0;
+    }
+
+    /* ── CTA SECTION ── */
+    .inv-cta {
+      position: relative;
+      z-index: 2;
+      padding: 36px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+
+    .cta-text {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 16px;
+      font-weight: 900;
+      color: var(--white);
+      letter-spacing: 4px;
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+
+    .cta-sub {
+      font-size: 10px;
+      color: var(--dim2);
+      letter-spacing: 3px;
+      margin-bottom: 28px;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      background: transparent;
+      color: var(--orange);
+      border: 1px solid var(--orange);
+      cursor: pointer;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 18px;
+      letter-spacing: 6px;
+      white-space: nowrap;
+      padding: 16px 48px;
+      position: relative;
+      overflow: hidden;
+      clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+      transition: color 0.2s;
+      text-decoration: none;
+    }
+
+    .cta-btn::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: var(--orange);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.25s ease;
+      z-index: 0;
+    }
+
+    .cta-btn:hover::before { transform: scaleX(1); }
+    .cta-btn:hover { color: #fff; }
+    .cta-btn:active { transform: scale(0.97); }
+    .cta-btn span { position: relative; z-index: 1; }
+
+    @keyframes btnPulse {
+      0%, 100% { border-color: var(--orange); box-shadow: 0 0 0 0 rgba(255,92,0,0); }
+      50%       { border-color: rgba(255,92,0,0.4); box-shadow: 0 0 20px 4px rgba(255,92,0,0.08); }
+    }
+    .cta-btn { animation: btnPulse 2.4s ease infinite; }
+
+    /* ── ORGS ── */
+    .inv-orgs {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+
+    .org-tag {
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      color: var(--stone);
+      border: 1px solid var(--border2);
+      padding: 5px 12px;
+      font-weight: 700;
+    }
+
+    .teaser-tag {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--orange);
+      border: 1px solid var(--orange);
+      padding: 8px 20px;
+      background: rgba(255,92,0,0.04);
+    }
+
+    /* ── FOOTER ── */
+    .inv-footer {
+      background: var(--bg-mid);
+      padding: 14px 24px;
+      border-top: 1px solid var(--border2);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-brand {
+      font-size: 9px;
+      letter-spacing: 5px;
+      color: var(--dim2);
+      font-weight: 700;
+    }
+
+    .footer-line { flex: 1; height: 1px; background: var(--border); }
+
+    .footer-right {
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: var(--dim2);
+      font-weight: 700;
+    }
+
+    /* ── NAV LINK ── */
+    .inv-nav {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      z-index: 10;
+    }
+
+    .inv-nav a {
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--dim2);
+      text-decoration: none;
+      font-weight: 700;
+      padding: 6px 12px;
+      border: 1px solid var(--border);
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .inv-nav a:hover {
+      color: var(--orange);
+      border-color: var(--orange);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      body { padding: 0; }
+      .invitation { width: 100%; border: none; }
+      .inv-title { font-size: 32px; letter-spacing: 4px; }
+      .info-grid { grid-template-columns: 1fr; }
+      :root {
+        --border:  #161410;
+        --border2: #1C1A14;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="invitation">
+
+  <div class="inv-grid-bg"></div>
+
+  <svg class="inv-mountain" viewBox="0 0 480 180" preserveAspectRatio="xMidYMax meet">
+    <path d="M0,130 L80,68 L140,96 L200,38 L265,76 L315,24 L385,62 L435,42 L480,58 L480,180 L0,180 Z" fill="#0F0D09"/>
+    <path d="M0,150 L60,112 L118,128 L178,88 L245,114 L298,66 L368,98 L424,82 L480,94 L480,180 L0,180 Z" fill="#0A0806"/>
+    <path d="M0,130 L80,68 L140,96 L200,38 L265,76 L315,24 L385,62 L435,42 L480,58" fill="none" stroke="#1E1A12" stroke-width="0.8"/>
+  </svg>
+
+  <div class="inv-nav">
+    <a href="poster.html">查看日程 →</a>
+  </div>
+
+  <!-- ══ HEADER ══ -->
+  <div class="inv-header">
+    <div class="inv-eyebrow">
+      <span class="eye-dot"></span>
+      <span class="eyebrow-text">寻迹莫干山 · 记路家计划</span>
+      <span class="eye-dot"></span>
+    </div>
+
+    <svg class="inv-icon" viewBox="0 0 56 56" fill="none">
+      <rect x="8" y="18" width="40" height="28" rx="1" stroke="#2A2420" stroke-width="1.2"/>
+      <path d="M8 22L28 34L48 22" stroke="#2A2420" stroke-width="1.2"/>
+      <circle cx="28" cy="30" r="6" fill="none" stroke="#FF5C00" stroke-width="1" opacity="0.6"/>
+      <path d="M25 30L27 32L31 28" stroke="#FF5C00" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+
+    <div class="inv-title-label">诚 邀 函</div>
+    <div class="inv-title">48<span>小时</span><br>城市落跑计划</div>
+    <div class="inv-title-en">48-HOUR COUNTDOWN URBAN RUNNING PLAN</div>
+
+    <div class="inv-divider"></div>
+
+    <div class="inv-greeting">
+      亲爱的运动爱好者：<br>
+      我们诚挚地邀请您加入这场<br>
+      属于勇敢者的48小时莫干山之旅
+    </div>
+  </div>
+
+  <!-- accent bar -->
+  <div class="accent-bar">
+    <div style="flex:5;background:#FF5C00"></div>
+    <div style="flex:1;background:#C4E000;margin-left:2px"></div>
+    <div style="flex:2;background:#1A1C14;margin-left:2px"></div>
+    <div style="flex:4;background:#0A0908;margin-left:2px"></div>
+  </div>
+
+  <!-- ══ EVENT INFO ══ -->
+  <div class="inv-section">
+    <div class="section-label">活动信息</div>
+    <div class="info-grid">
+      <div class="info-card accent">
+        <div class="info-card-label">DATE</div>
+        <div class="info-card-value">JUL 3 — 5</div>
+        <div class="info-card-sub">2026年7月3日至5日</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">DURATION</div>
+        <div class="info-card-value">48 HRS</div>
+        <div class="info-card-sub">倒计时48小时</div>
+      </div>
+      <div class="info-card wide">
+        <div class="info-card-label">LOCATION</div>
+        <div class="info-card-value cn">浙江省湖州市德清县 · 莫干山</div>
+        <div class="info-card-sub">MOGANSHAN, DEQING, HUZHOU, ZHEJIANG</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TEASER ══ -->
+  <div class="inv-section" style="text-align:center;">
+    <div class="section-label" style="justify-content:center;">你将体验</div>
+    <div style="display:flex;flex-direction:column;gap:20px;align-items:center;">
+      <div style="display:flex;gap:24px;justify-content:center;flex-wrap:wrap;">
+        <div class="teaser-tag">山野探索</div>
+        <div class="teaser-tag">任务解密</div>
+        <div class="teaser-tag">极限训练</div>
+      </div>
+      <div style="display:flex;gap:24px;justify-content:center;flex-wrap:wrap;">
+        <div class="teaser-tag">追光奔跑</div>
+        <div class="teaser-tag">篝火夜话</div>
+        <div class="teaser-tag">证书认证</div>
+      </div>
+      <div style="font-size:10px;color:var(--dim);letter-spacing:2px;line-height:2;margin-top:4px;">
+        更多惊喜，抵达后揭晓<br>
+        48小时，只属于你的山野记忆
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ CTA ══ -->
+  <div class="inv-cta">
+    <div class="cta-text">寻找懂运动又专业的你</div>
+    <div class="cta-sub">玩出运动的正确生活方式</div>
+
+    <a href="poster.html" class="cta-btn"><span>▶ 查看活动日程</span></a>
+
+    <div class="inv-orgs">
+      <div class="org-tag">莫干山户外运动协会</div>
+      <div class="org-tag">山野梦想家</div>
+      <div class="org-tag">DEEPBEAT 记路家</div>
+    </div>
+  </div>
+
+  <!-- ══ FOOTER ══ -->
+  <div class="inv-footer">
+    <div class="footer-logo">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+        <path d="M10 2L14 8H16L10 18L4 8H6L10 2Z" fill="none" stroke="#3A3530" stroke-width="1" stroke-linejoin="round"/>
+        <path d="M10 6L12 9H8L10 6Z" fill="#FF5C00" opacity="0.7"/>
+      </svg>
+      <span class="footer-brand">MOGANSHAN</span>
+    </div>
+    <div class="footer-line"></div>
+    <div class="footer-right">OUTDOOR · TRAIL · RUN</div>
+  </div>
+
+</div>
+
+</body>
+</html>
